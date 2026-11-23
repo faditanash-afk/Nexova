@@ -1,0 +1,21 @@
+name: Publish Nexova
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: github-pages
+    steps:
+      - uses: actions/checkout@v4
+      - run: unzip -q nexova-website.zip -d extracted && test -f extracted/nexova-site/index.html
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: extracted/nexova-site
+      - uses: actions/deploy-pages@v4
